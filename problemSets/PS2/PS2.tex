@@ -82,6 +82,8 @@ President in the last congressional session. After checking congressional record
 for the population of all 40 bills passed, 2 were vetoed. Does it make sense to construct a
 confidence interval using these data to answer your question? Explain.
 
+No it doesnt make sense to construct a confidence interval with this data as the sample size, n, should be sufficiently large that there are at least 15 observations for both sides of the argument. In this problem there are 38 observations where there was no veto, but only 2 that were vetoed.
+
 %What proportion of a normal distribution falls in the following ranges (round to 3 decimal points)? Use Table A on the last page of Agresti and Finlay's book. Highlight the appropriate portion of the graph. \\
 %\vspace{0.25in}
 %
@@ -131,12 +133,21 @@ confidence interval using these data to answer your question? Explain.
 \begin{itemize}
 
 \item[(a)] Identify the population distribution. State its mean and standard deviation. Is the data skewed?\\
+mean for population= 5.2
+stdev for population= 3
+skewed to the right 
 
 \item[(b)] Identify the sample data distribution. State its mean and standard deviation. Is the data skewed?\\
 
+mean=4.6
+stdev=3.2
+the data is skewed as it doesn't match the population parameter.
 \item[(c)] Identify the sampling distribution of $\bar{y}$. State its mean and standard error and explain what it describes.\\
+mean=4.6 stdev=3.2
+this is the sampling distribution of the sample mean. Meaning, we are looking at the distribution of the sample mean derived from a sample (n=36) of the original distribution.
 
 \item[(d)] Find the probability that her sample mean falls within 0.5 of the population mean.\\
+
 
 \item[(e)] Suppose she takes a random sample of size 100. Find the probability that the sample mean falls within 0.5 of the true mean, and compare the answer to that in (d).\\
 
@@ -219,22 +230,43 @@ Peake and Eshbaugh-Soha (2008) study drug policy coverage. Their data count the 
 \begin{itemize}
 
 \item[(a)]  Draw a histogram of the monthly count of drug-related stories. \\
+ hist(drugcoverage$drugsmedia, xlab="months", ylab="frequency", main = "monthly count of drug-related charges")
 
 \item[(b)] Draw two boxplots: One of drug-related stories and another of presidential approval. How do these figures differ and what does that tell you about the contrast between the variables? \\
-
+boxplot(drugcoverage$drugsmedia, xlab="drugs in media", ylab="frequency" ,main="boxplot of drugs in media")
+boxplot(drugcoverage$approval, ylab="frequency", xlab="approval rating", main="presidental approval")
 \item[(c)]  Draw two scatterplots:
 \begin{itemize}
 \item In the first, represent the number of drug-related stories on the vertical axis, and place the unemployment rate on the horizontal axis.
+
+plot(x=drugcoverage$unemploy, y=drugcoverage$drugsmedia, main = "First scatterplot", xlab = "unemployment", ylab= "drug-related stories")
+
 \item In the second, represent the number of drug-related stories on the vertical axis, and place presidential approval on the horizontal axis.
+
+plot(x=drugcoverage$approval, y=drugcoverage$drugsmedia, main = "second scatterplot", xlab="approval rating", ylab="drug-related stories")
+
 \item How do the graphs differ? What do they tell you about the data? \\
 \end{itemize}
+
+As approval rating increases, the number of drug-related stories also increases.
+As unemployment decreases, the number of drug-related stories increases.
+This tells us that the number of drug-related stories differs based on both the approval rating and the unemployment rate.
 
 \item[(d)]  Draw two line graphs:
 \begin{itemize}
 \item In the first, draw the number of drug-related stories by month over time.
+
+plot(x=drugcoverage$Year, y=drugcoverage$drugsmedia, ylab="drug related stories", xlab="month", main="number of drug-related stories over time")
+
 \item In the second, draw presidential approval by month over time.
+
+plot(x=drugcoverage$Year, y=drugcoverage$approval, ylab="approval rating", xlab="month", main="approval rating over time")
+
 \item What can you learn from these graphs? \\
+the approval rating is varys a lot over the course of a presidents tenure. While the number of drug related stories has some outliers but mainly stays below 50 stories per month.
+
 \end{itemize}
+
 
 
 \end{itemize}
@@ -245,35 +277,57 @@ For this question, you will work with W-NOMINATE data to trace the policy positi
 \begin{itemize}
 
 \item[(a)] Import data on the 88th and 107th Congresses. Then, create four subsets of the data by session and party (Democratic Party in the 88th session, Democratic Party in the 107th session, Republican Party in the 88th session, and Republican Party in the 107th session). \\
+read.csv("wnominatehouse.csv")
+wnominate <- read.csv("wnominatehouse.csv")
+
+> democrats107 <- subset(wnominate,congress==107 & party==100)
+> democrats88 <- subset(wnominate, congress==88 & party==100)
+> republicans88 <- subset(wnominate, congress==88 & party==200)
+> republicans107 <- subset(wnominate, congress==107 & party==200)
 
 \item[(b)] For the Democratic Party, calculate the median W-NOMINATE scores for two Congresses. How did the median change over time? What does this mean? \\
-
+median(democrats88$wnominate, na.rm=TRUE)
+median(democrats107$wnominate, na.rm=TRUE)
+The median increased (away from 0), meaning that the middle democrat became more polarized.
 \item[(c)] For the Republican Party, calculate the median W-NOMINATE scores for the two Congresses. How did the median change over time? What does this mean? \\
-
+median(republicans88$wnominate, na.rm=TRUE)
+median(republicans107$wnominate, na.rm=TRUE)
+the median increased, meaning that the midde republican became more polarized.
 \item[(d)] 
 For the Democratic Party, calculate the standard deviation of W-NOMINATE scores for the two Congresses. How did the standard deviation change over time? What does this mean? \\
-
+sd(democrats88$wnominate)
+sd(democrats107$wnominate)
+The stdev decreased from 88 to 107. This means that democrats began voting more similarily. 
 \item[(e)] For the Republican Party, calculate the standard deviation of W-NOMINATE scores for the two Congresses. How did the standard deviation change over time? What does this mean? \\
-
-
+sd(republicans88$wnominate)
+sd(republicans107$wnominate)
+The stdev decreased from 88 to 107. This means that republicans began voting more similarly. 
 %\part[2] 
 %For the 71st Congress, create a plot that overlays two histograms. One histogram should plot the distribution of W-NOMINATE scores for the Democratic Party. The other histogram should plot the distribution of W-NOMINATE scores for the Republican Party. 
 %\vspace{2cm}
 
 \item[(f)] For the 88th Congress, create a plot that overlays two histograms. One histogram should plot the distribution of W-NOMINATE scores for the Democratic Party. The other histogram should plot the distribution of W-NOMINATE scores for the Republican Party. (Hint: to overlay two histograms, you can run two separate \texttt{hist} commands but include an \texttt{add} argument in the second \texttt{hist} one.) \\
 
+hist(republicans88$wnominate, xlab = "wnominate", main="88th congress histogram", col="red", xlim=c(-1,1))
+hist(democrats88$wnominate, xlab="wnominate", main="88th congress histogram", col="blue", add=T)
+
 \item[(g)]  
 For the 107th Congress, create a plot that overlays two histograms. One histogram should plot the distribution of W-NOMINATE scores for the Democratic Party. The other histogram should plot the distribution of W-NOMINATE scores for the Republican Party. \\
+hist(republicans107$wnominate, xlab="wnominate", main="107th congress histogram", col="red",xlim=c(-1,1))
+ hist(democrats107$wnominate, xlab="wnominate", main="107th congress histogram", col="blue", add=T)
 
 \item[(h)] 
 Based on what you have done so far, compare the 88th Congress and the 107th Congress.
+The 88th congress was much more bipartisan. There is a huge polarization of the parties between the 88th and 107th congress.
+
 
 \begin{itemize}
 \item Did polarization decrease, increase, or stay the same? Are both parties responsible for this or is one party responsible? \\
+polarization increased. Both parties responsible.
 
 
 \item For each party, what happened to the ideological cohesiveness of its members? Did it decrease, increase, or stay the same?\\
-
+I'm a bit confused on the question, however, I'll try to answer it as best as I can. In the 88th congress some democrats voted republican on issues and vice versa. In the 107th congress we barely see that.
 
 
 \end{itemize}
